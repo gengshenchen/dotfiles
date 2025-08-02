@@ -28,12 +28,19 @@ set splitbelow
 set splitright
 
 " temp file path
-set directory^=$HOME/.vim/swap//
 set updatecount=20
 set backup
-set backupdir^=$HOME/.vim/backup//
 set undofile
-set undodir^=$HOME/.vim/undo//
+let s:vim_tmp_dir = expand('~/.vim-tmp')
+for dir in ['backup', 'swap', 'undo']
+    let full_path = s:vim_tmp_dir . '/' . dir
+    if !isdirectory(full_path)
+        call mkdir(full_path, 'p')
+    endif
+endfor
+set directory=~/.vim-tmp/swap//
+set backupdir=~/.vim-tmp/backup//
+set undodir=~/.vim-tmp/undo//
 
 " auto save
 set updatetime=1000

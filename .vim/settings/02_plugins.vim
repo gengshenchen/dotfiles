@@ -8,7 +8,7 @@ augroup NERDTreeHooks
     "autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endifaugroup END
 
 " --- vim-lsp for clangd ---
-let g:lsp_log_file = expand('~/.vim/lsp.log')
+let g:lsp_log_file = expand('~/.vim-tmp/lsp.log')
 let g:lsp_log_verbose = 1
 if executable('clangd')
     augroup vim_lsp_register_clangd

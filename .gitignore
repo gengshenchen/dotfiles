@@ -1,1 +1,9 @@
+# .gitignore
+# 忽略 Vim 的暫存檔目錄
+/.vim-tmp/
+
+# 忽略所有 Vim 暫存檔類型，以防萬一
+*.swp
+*~
+*.un~
 .vim/lsp.log

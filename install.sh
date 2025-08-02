@@ -20,22 +20,27 @@ echo "--> Backing up existing vim configs to ~/.vimrc.bak and ~/.vim.bak..."
 mv ~/.vimrc ~/.vimrc.bak 2>/dev/null
 mv ~/.vim ~/.vim.bak 2>/dev/null
 
+# --- 2.tmp ---
+echo "--> Setting up temporary directories for Vim..."
+mkdir -p ~/.vim-tmp/swap
+mkdir -p ~/.vim-tmp/backup
+mkdir -p ~/.vim-tmp/undo
 
-# --- 2. 建立符號連結 ---
+# --- 3. 建立符號連結 ---
 # 使用我們自動偵測到的 $SOURCE_DIR 變數，而不是寫死的 ~/dotfiles
 echo "--> Creating symlinks from repository to home directory..."
 ln -s "${SOURCE_DIR}/.vimrc" ~/.vimrc
 ln -s "${SOURCE_DIR}/.vim" ~/.vim
 
 
-# --- 3. 安裝所有插件 (透過 git submodule) ---
+# --- 4. 安裝所有插件 (透過 git submodule) ---
 echo "--> Installing plugins via git submodule..."
 # 確保我們在 git 倉庫的根目錄下執行
 cd "${SOURCE_DIR}"
 git submodule update --init --recursive
 
 
-# --- 4. 自動生成 help tags ---
+# --- 5. 自動生成 help tags ---
 echo "--> Generating helptags for all plugins..."
 # 使用 -Es 參數可以在「安靜模式」下執行，更乾淨
 vim -Es -u NONE -c 'helptags ALL' -c 'q'
