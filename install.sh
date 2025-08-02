@@ -45,6 +45,10 @@ echo "--> Generating helptags for all plugins..."
 # 使用 -Es 參數可以在「安靜模式」下執行，更乾淨
 vim -Es -u NONE -c 'helptags ALL' -c 'q'
 
+# ---6. Terminal 配置主题
+echo -e "\n${INFO}--> Configuring Terminal using our self-contained script...${NC}"
+sh "${SOURCE_DIR}/scripts/apply-gruvbox-theme.sh"
 
-echo -e "\n${SUCCESS}Done! Your Vim environment is ready.${NC}"
-echo -e "${SUCCESS}Restart your terminal or run 'source ~/.bashrc' for changes to take effect.${NC}"
+echo -e "\n${SUCCESS}Done! Your full environment is ready.${NC}"
+echo -e "${SUCCESS}Please RESTART your terminal completely for all changes to take effect.${NC}"
+
