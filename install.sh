@@ -6,6 +6,44 @@
 # 無論您在哪裡執行這個腳本，這都能確保我們找到了 dotfiles 倉庫的根目錄
 SOURCE_DIR=$(cd "$(dirname "$0")" && pwd)
 
+install_dependencies() {
+    echo -e "\n${INFO}Checking and installing dependencies...${NC}"
+
+    # 定義必要的工具列表
+    local pkgs_to_install="git vim  ripgrep clangd cmake"
+    local pkg_manager=""
+    local install_cmd=""
+
+    # 偵測作業系統和套件管理器
+    if [[ "$(uname)" == "Darwin" ]]; then
+        if ! command -v brew &> /dev/null; then
+            echo -e "${ERROR}Homebrew (brew) not found. Please install it first.${NC}"
+            exit 1
+        fi
+        pkg_manager="brew"
+        install_cmd="brew install"
+    elif command -v apt-get &> /dev/null; then
+        pkg_manager="apt"
+        install_cmd="sudo apt-get install -y"
+        # 更新 apt 列表
+        echo "--> Updating apt package list..."
+        sudo apt-get update
+    else
+        echo -e "${ERROR}Unsupported package manager. Please install dependencies manually: ${pkgs_to_install}${NC}"
+        return
+    fi
+
+    # 遍歷工具列表，如果不存在則安裝
+    for pkg in $pkgs_to_install; do
+        if ! command -v $pkg &> /dev/null; then
+            echo "--> Installing ${pkg}..."
+            ${install_cmd} ${pkg}
+        else
+            echo -e "--> ${pkg} is already installed. ${SUCCESS}Skipping.${NC}"
+        fi
+    done
+}
+install_dependencies
 # 為了美觀，定義一些顏色
 INFO='\033[0;34m'
 SUCCESS='\033[0;32m'
@@ -46,7 +84,7 @@ echo "--> Generating helptags for all plugins..."
 vim -Es -u NONE -c 'helptags ALL' -c 'q'
 
 # ---6. Terminal 配置主题
-echo -e "\n${INFO}--> Configuring Terminal using our self-contained script...${NC}"
+echo -e "--> Configuring Terminal using our self-contained script...${NC}"
 sh "${SOURCE_DIR}/scripts/apply-gruvbox-theme.sh"
 
 echo -e "\n${SUCCESS}Done! Your full environment is ready.${NC}"

@@ -50,7 +50,6 @@ augroup AutoSave
     autocmd VimLeavePre * silent! wall
 augroup END
 
-
 " auto delete whitespace in line tail
 autocmd BufWritePre * :%s/\s\+$//e
 
