@@ -43,7 +43,9 @@ install_dependencies() {
         fi
     done
 }
+
 install_dependencies
+
 # 為了美觀，定義一些顏色
 INFO='\033[0;34m'
 SUCCESS='\033[0;32m'
