@@ -78,7 +78,8 @@ echo "--> Installing plugins via git submodule..."
 # 確保我們在 git 倉庫的根目錄下執行
 cd "${SOURCE_DIR}"
 git submodule update --init --recursive
-
+echo "--> Installing fzf binary..."
+.vim/pack/plugins/start/fzf/install --all
 
 # --- 5. 自動生成 help tags ---
 echo "--> Generating helptags for all plugins..."

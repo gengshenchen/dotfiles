@@ -2,10 +2,12 @@
 let NERDTreeShowHidden=1
 augroup NERDTreeHooks
     autocmd!
-    nnoremap <F2> :NERDTreeToggle<CR>
     autocmd StdinReadPre * let s:std_in=1
     autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
-    "autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endifaugroup END
+
+    "autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+    nnoremap <F2> :NERDTreeToggle<CR>
+augroup END
 
 " --- vim-lsp for clangd ---
 let g:lsp_log_file = expand('~/.vim-tmp/lsp.log')
@@ -63,7 +65,12 @@ augroup vim_clang_format_key_mappings
     nnoremap <leader>ci O// clang-format off<Esc>jo// clang-format on<Esc>
     vnoremap <leader>ci <Esc>'>o// clang-format on<Esc>'<O// clang-format off<Esc>
 augroup end
-" 自动在保存 .cpp, .h, .hpp 文件时进行格式化
+
+" --- fzf rg ---
+nnoremap <silent> <Leader>f :call Focus_code_window()<CR>:Files<CR>
+nnoremap <silent> <Leader>g :call Focus_code_window()<CR>:Rg<CR>
+nnoremap <silent> <Leader>b :call Focus_code_window()<CR>:Buffers<CR>
+"nnoremap <silent> <Leader>r :History<CR>
 
 " --- vim-airline ---
 let g:airline_theme = 'base16_gruvbox_dark_hard'

@@ -12,8 +12,8 @@ endfunction
 nnoremap <silent> <C-q> :call CloseQuickfixAndFocusCode()<CR>
 
 " --- Tab / Shift+Tab ---
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
+nnoremap <Tab> :call Focus_code_window()<CR>:bnext<CR>
+nnoremap <S-Tab> :call Focus_code_window()<CR>:bprevious<CR>
 
 " --- close current buffer
 nnoremap <leader>bd :bdelete<CR>
