@@ -7,3 +7,5 @@
 *~
 *.un~
 .vim/lsp.log
+
+*.local

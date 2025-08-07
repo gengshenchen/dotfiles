@@ -1,0 +1,20 @@
+# vf - (Vim Find) Use rg to search content and open in Vim
+# Usage: vf "search_term"
+vf() {
+  # 檢查是否提供了搜尋參數
+  if [ -z "$1" ]; then
+    echo "Usage: vf <search_term>"
+    return 1
+  fi
+
+  # 1. 使用 rg 搜尋內容，並輸出 `檔案:行號:內容` 格式
+  # 2. 將結果傳送給 fzf
+  # 3. fzf 使用 --preview 功能，呼叫 bat 來高亮預覽檔案內容
+  # 4. 選中後，用 awk 和 xargs 組合指令，並用 Vim 在指定行打開
+  rg --line-number --no-heading --smart-case "${1}" |
+    fzf --delimiter ':' \
+        --preview 'bat --style=full --color=always --highlight-line {2} {1}' \
+        --preview-window 'up,50%,border-bottom,+{2}+3/3,~3' |
+    awk -F: '{print "+"$2" "$1}' |
+    xargs vim
+}
