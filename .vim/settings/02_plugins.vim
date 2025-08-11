@@ -72,6 +72,11 @@ nnoremap <silent> <Leader>g :call Focus_code_window()<CR>:Rg<CR>
 nnoremap <silent> <Leader>b :call Focus_code_window()<CR>:Buffers<CR>
 "nnoremap <silent> <Leader>r :History<CR>
 
+"--- tagbar (outline)---
+let g:tagbar_width = 35
+let g:tagbar_autofocus = 1
+nnoremap <silent> <leader>st :TagbarToggle<CR>
+
 " --- vim-airline ---
 let g:airline_theme = 'base16_gruvbox_dark_hard'
 let g:airline#extensions#tabline#enabled = 1
