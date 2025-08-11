@@ -18,3 +18,4 @@ vf() {
     awk -F: '{print "+"$2" "$1}' |
     xargs vim
 }
+
