@@ -53,3 +53,17 @@ augroup END
 " auto delete whitespace in line tail
 autocmd BufWritePre * :%s/\s\+$//e
 
+" --- fold setting ---
+" za: switch zM:(more)fold all zR:(reduce)unfold all
+" \zn: fold none, \za: fold all
+nnoremap <leader>zn :set nofoldenable<CR>
+nnoremap <leader>za :set foldenable<CR>
+" not fold for start
+set foldlevelstart=99
+
+augroup filetype_folds
+    autocmd!
+    autocmd FileType c,cpp,java,javascript,rust,go,sh setlocal foldmethod=syntax
+    autocmd FileType python,yaml,vim setlocal foldmethod=indent
+    autocmd FileType markdown,conf setlocal foldmethod=marker
+augroup END
