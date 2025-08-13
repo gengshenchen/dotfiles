@@ -10,7 +10,7 @@ install_dependencies() {
     echo -e "\n${INFO}Checking and installing dependencies...${NC}"
 
     # 定義必要的工具列表
-    local pkgs_to_install="git gitk vim-gtk3  ripgrep clangd cmake universal-ctags"
+    local pkgs_to_install="git gitk vim-gtk3  ripgrep clangd clang-format cmake universal-ctags"
     local pkg_manager=""
     local install_cmd=""
 
