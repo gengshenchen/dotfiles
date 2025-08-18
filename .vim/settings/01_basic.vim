@@ -12,6 +12,7 @@ set noerrorbells visualbell t_vb=
 set mouse+=a
 set showcmd
 set clipboard=unnamedplus
+set synmaxcol=200
 
 "filetype
 filetype on

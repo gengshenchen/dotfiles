@@ -32,6 +32,7 @@ if executable('clangd')
         autocmd FileType c,cpp,objc,objcpp nnoremap <buffer> [g <Plug>(lsp-previous-diagnostic)
         autocmd FileType c,cpp,objc,objcpp nnoremap <buffer> ]g <Plug>(lsp-next-diagnostic)
         autocmd FileType c,cpp,objc,objcpp nnoremap <buffer> <leader>ca <Plug>(lsp-code-action-float)
+
     augroup end
 endif
 
@@ -49,8 +50,11 @@ augroup asyncomplete_key_mappings
                 \ <SID>check_back_space() ? "\<TAB>" :
                 \ asyncomplete#force_refresh()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-    inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<c-y>" : "\<CR>"
+ "   inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<c-y>" : "\<CR>"
+   inoremap <expr> <cr> pumvisible()? asyncomplete#close_popup() : "\<cr>"
+
     imap <c-@> <Plug>(asyncomplete_force_refresh)
+
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup end
 
@@ -60,6 +64,7 @@ let g:clang_format#auto_format_on_insert_leave = 1
 let g:clang_format#auto_filetypes = ['c', 'cpp', 'h', 'hpp']
 augroup vim_clang_format_key_mappings
     autocmd!
+    autocmd BufWritePre *.c,*.cpp,*.h,*.hpp call lsp#formatting#sync()
     nnoremap <Leader>cf :ClangFormat<CR>
     vnoremap <Leader>cf <Esc>:ClangFormat<CR>
     nnoremap <leader>ci O// clang-format off<Esc>jo// clang-format on<Esc>
