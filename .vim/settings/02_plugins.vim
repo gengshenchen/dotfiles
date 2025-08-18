@@ -64,7 +64,6 @@ let g:clang_format#auto_format_on_insert_leave = 1
 let g:clang_format#auto_filetypes = ['c', 'cpp', 'h', 'hpp']
 augroup vim_clang_format_key_mappings
     autocmd!
-    autocmd BufWritePre *.c,*.cpp,*.h,*.hpp call lsp#formatting#sync()
     nnoremap <Leader>cf :ClangFormat<CR>
     vnoremap <Leader>cf <Esc>:ClangFormat<CR>
     nnoremap <leader>ci O// clang-format off<Esc>jo// clang-format on<Esc>
