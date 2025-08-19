@@ -16,9 +16,6 @@
 [submodule ".vim/pack/plugins/start/vim-airline-themes"]
 	path = .vim/pack/plugins/start/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes.git
-[submodule ".vim/pack/plugins/start/vim-clang-format"]
-	path = .vim/pack/plugins/start/vim-clang-format
-	url = https://github.com/rhysd/vim-clang-format.git
 [submodule ".vim/pack/plugins/start/vim-lsp"]
 	path = .vim/pack/plugins/start/vim-lsp
 	url = https://github.com/prabirshrestha/vim-lsp.git
@@ -38,3 +35,6 @@
 [submodule ".vim/pack/plugins/start/tagbar"]
 	path = .vim/pack/plugins/start/tagbar
 	url = https://github.com/preservim/tagbar.git
+[submodule ".vim/pack/plugins/start/ale"]
+	path = .vim/pack/plugins/start/ale
+	url = https://github.com/dense-analysis/ale.git

@@ -44,10 +44,16 @@ set backupdir=~/.vim-tmp/backup//
 set undodir=~/.vim-tmp/undo//
 
 " auto save
+function! s:check_and_update() " for ale call clang-format
+    if &modified
+        silent! update
+    endif
+endfunction
 set updatetime=1000
 augroup AutoSave
     autocmd!
-    autocmd CursorHold,CursorHoldI,FocusLost * silent! update
+   " autocmd FocusLost * silent! update " CursorHold,CursorHoldI,
+    autocmd FocusLost * call timer_start(1, {-> s:check_and_update()})
     autocmd VimLeavePre * silent! wall
 augroup END
 
@@ -68,3 +74,4 @@ augroup filetype_folds
     autocmd FileType python,yaml,vim setlocal foldmethod=indent
     autocmd FileType markdown,conf setlocal foldmethod=marker
 augroup END
+

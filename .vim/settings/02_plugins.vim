@@ -11,7 +11,7 @@ augroup END
 
 " --- vim-lsp for clangd ---
 let g:lsp_log_file = expand('~/.vim-tmp/lsp.log')
-let g:lsp_log_verbose = 1
+let g:lsp_log_verbose = 0
 if executable('clangd')
     augroup vim_lsp_register_clangd
         autocmd!
@@ -59,17 +59,24 @@ augroup asyncomplete_key_mappings
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup end
 
-" --- vim-clang-format ---
-let g:clang_format#auto_format = 1
-let g:clang_format#auto_format_on_insert_leave = 1
-let g:clang_format#auto_filetypes = ['c', 'cpp', 'h', 'hpp']
-augroup vim_clang_format_key_mappings
-    autocmd!
-    nnoremap <Leader>cf :ClangFormat<CR>
-    vnoremap <Leader>cf <Esc>:ClangFormat<CR>
-    nnoremap <leader>ci O// clang-format off<Esc>jo// clang-format on<Esc>
-    vnoremap <leader>ci <Esc>'>o// clang-format on<Esc>'<O// clang-format off<Esc>
-augroup end
+
+" --- ALE (Asynchronous Linting Engine) ---
+let g:ale_cpp_clangformat_executable = 'clang-format'
+let g:ale_c_clangformat_executable = 'clang-format'
+let g:ale_linters = {
+\   'c': [],
+\   'cpp': [],
+\}
+
+let g:ale_fixers = {
+\   'cpp': ['clang-format'],
+\   'c': ['clang-format'],
+\}
+let g:ale_disable_lsp = 1
+let g:ale_fix_on_save = 1
+nnoremap <Leader>cf :ALEFix<CR>
+nnoremap <leader>ci O// clang-format off<Esc>jo// clang-format on<Esc>
+vnoremap <leader>ci <Esc>'>o// clang-format on<Esc>'<O// clang-format off<Esc>
 
 " --- fzf rg ---
 nnoremap <silent> <Leader>f :call Focus_code_window()<CR>:Files<CR>
