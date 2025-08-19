@@ -44,6 +44,9 @@ install_dependencies() {
     done
 }
 
+
+
+# --- 主流程 ---
 install_dependencies
 
 # 為了美觀，定義一些顏色

@@ -20,6 +20,7 @@ if executable('clangd')
                     \ 'cmd': {server_info->['clangd']},
                     \ 'whitelist': ['c','cpp','objc','objcpp'],
                     \ })
+
         autocmd FileType c,cpp,objc,objcpp,h,cc,hpp,hxx  setlocal omnifunc=lsp#complete
     augroup END
 
