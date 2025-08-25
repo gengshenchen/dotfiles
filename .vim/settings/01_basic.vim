@@ -75,3 +75,7 @@ augroup filetype_folds
     autocmd FileType markdown,conf setlocal foldmethod=marker
 augroup END
 
+augroup filetype_comment
+    autocmd!
+    autocmd FileType c,cpp setlocal commentstring=//%s
+augroup END
