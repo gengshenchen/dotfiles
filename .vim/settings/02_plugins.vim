@@ -73,7 +73,7 @@ let g:ale_fixers = {
 \   'c': ['clang-format'],
 \}
 let g:ale_disable_lsp = 1
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 nnoremap <Leader>cf :ALEFix<CR>
 nnoremap <leader>ci O// clang-format off<Esc>jo// clang-format on<Esc>
 vnoremap <leader>ci <Esc>'>o// clang-format on<Esc>'<O// clang-format off<Esc>

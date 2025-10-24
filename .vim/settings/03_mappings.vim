@@ -17,3 +17,6 @@ nnoremap <S-Tab> :call Focus_code_window()<CR>:bprevious<CR>
 
 " --- close current buffer
 nnoremap <leader>bd :bdelete<CR>
+
+" --- save buffer
+nnoremap <leader>w :update<CR>
