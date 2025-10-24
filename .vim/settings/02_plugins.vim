@@ -37,6 +37,33 @@ if executable('clangd')
     augroup end
 endif
 
+" ---vim-lsp for rust ---
+if executable('rust-analyzer')
+    augroup LspRustAnalyzer
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+            \ 'name': 'rust-analyzer',
+            \ 'cmd': {server_info->['rust-analyzer']},
+            \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'Cargo.toml'))},
+            \ 'whitelist': ['rust'],
+            \ })
+        autocmd FileType rust setlocal omnifunc=lsp#complete
+    augroup END
+    " --- vim-lsp Key Mappings for Rust ---
+    augroup lsp_rust_key_mappings
+        autocmd!
+        " Apply standard LSP mappings to Rust files
+        autocmd FileType rust nnoremap <buffer><silent> gd <Plug>(lsp-definition)
+        autocmd FileType rust nnoremap <buffer><silent> gr <Plug>(lsp-references)
+        autocmd FileType rust nnoremap <buffer><silent> K <Plug>(lsp-hover)
+        autocmd FileType rust nnoremap <buffer><silent> <leader>rn <Plug>(lsp-rename)
+        autocmd FileType rust nnoremap <buffer><silent> [g <Plug>(lsp-previous-diagnostic)
+        autocmd FileType rust nnoremap <buffer><silent> ]g <Plug>(lsp-next-diagnostic)
+        autocmd FileType rust nnoremap <buffer><silent> <leader>ca <Plug>(lsp-code-action-float)
+    augroup END
+    " --- >>> END OF NEW BLOCK <<< ---
+endif
+
 " --- asyncomplete.vim ---
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_popup_delay = 150
@@ -66,11 +93,13 @@ let g:ale_c_clangformat_executable = 'clang-format'
 let g:ale_linters = {
 \   'c': [],
 \   'cpp': [],
+\   'rust': [],
 \}
 
 let g:ale_fixers = {
 \   'cpp': ['clang-format'],
 \   'c': ['clang-format'],
+\   'rust': ['rustfmt'],
 \}
 let g:ale_disable_lsp = 1
 let g:ale_fix_on_save = 0

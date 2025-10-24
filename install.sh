@@ -13,6 +13,7 @@ install_dependencies() {
     local pkgs_to_install="git gitk vim-gtk3 curl build-essential cmake python3-dev ripgrep clangd clang-format cmake universal-ctags"
     local pkg_manager=""
     local install_cmd=""
+    local rust_components="rust-analyzer rustfmt"
 
     # 偵測作業系統和套件管理器
     if [[ "$(uname)" == "Darwin" ]]; then
@@ -42,6 +43,49 @@ install_dependencies() {
             echo -e "--> ${pkg} is already installed. ${SUCCESS}Skipping.${NC}"
         fi
     done
+
+    # --- >>> 安裝 Rust 工具鏈 <<< ---
+    echo -e "\n${INFO}--> Checking and installing Rust toolchain...${NC}"
+    if ! command -v rustup &> /dev/null; then
+        echo "--> rustup not found. Installing Rust via rustup (this might take a while)..."
+        # 執行官方的 rustup 安裝腳本 (-y 表示非互動式)
+        # 使用 curl -fL ... 確保下載失敗時腳本會中止
+        if curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; then
+            # 將 cargo 加入到當前 session 的 PATH，以便後續指令能找到它
+            # 同時也檢查 .cargo/env 是否存在
+            if [ -f "$HOME/.cargo/env" ]; then
+                 source "$HOME/.cargo/env"
+                 echo "Rust installed successfully via rustup."
+            else
+                 echo -e "${WARN}Could not find ~/.cargo/env after rustup install. You might need to manually add cargo to PATH.${NC}"
+            fi
+        else
+            echo -e "${ERROR}Failed to install rustup. Please check your network or install manually.${NC}"
+            # 根據需要，可以選擇 exit 1 終止腳本
+        fi
+    else
+        echo -e "--> rustup is already installed. ${SUCCESS}Skipping installation.${NC}"
+        # 即使 rustup 已安裝，也要確保 PATH 正確
+        if [ -f "$HOME/.cargo/env" ]; then source "$HOME/.cargo/env" 2>/dev/null || true; fi
+    fi
+
+    # 確保 cargo 存在 (rustup 應該會處理好)
+    if command -v cargo &> /dev/null; then
+        echo "--> Checking/Installing Rust components (rust-analyzer, rustfmt)..."
+        # 使用 rustup 來安裝或更新語言伺服器和格式化工具
+        # 將錯誤導向 /dev/null，避免在元件已存在時顯示不必要的訊息
+        rustup component add ${rust_components} > /dev/null 2>&1
+
+        # 最後檢查 rust-analyzer 是否真的可用
+        if ! command -v rust-analyzer &> /dev/null; then
+             echo -e "${ERROR}rust-analyzer installation via rustup component add failed. Please check rustup components manually.${NC}"
+             # 可以選擇 exit 1 終止腳本
+        else
+             echo -e "--> Rust components (rust-analyzer, rustfmt) checked/installed. ${SUCCESS}Done.${NC}"
+        fi
+    else
+        echo -e "${WARN}cargo command not found. Cannot install Rust components (rust-analyzer, rustfmt). Please ensure rustup installed correctly and PATH is set.${NC}"
+    fi
 }
 
 
