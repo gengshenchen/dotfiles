@@ -20,3 +20,9 @@ nnoremap <leader>bd :bdelete<CR>
 
 " --- save buffer
 nnoremap <leader>w :update<CR>
+
+" --- insert a blank line
+nnoremap <leader>o o<Esc>
+
+" --- insert a blank line
+nnoremap <leader>O O<Esc>
