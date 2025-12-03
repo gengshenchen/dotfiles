@@ -118,7 +118,8 @@ mkdir -p ~/.vim-tmp/undo
 echo "--> 3. Creating symlinks from repository to home directory..."
 ln -s "${SOURCE_DIR}/.vimrc" ~/.vimrc
 ln -s "${SOURCE_DIR}/.vim" ~/.vim
-
+ln -s "${SOURCE_DIR}/.gitconfig" ~/.gitconfig
+ln -s "${SOURCE_DIR}/.gitignore_global" ~/.gitignore_global
 
 # --- 4. 安裝所有插件 (透過 git submodule) ---
 echo "--> 4. Installing plugins via git submodule..."

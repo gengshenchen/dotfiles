@@ -1,0 +1,149 @@
+# ~/dotfiles/.gitconfig
+
+# ============================================================================
+# Core & Identity (User info is in local config)
+# ============================================================================
+[user]
+    # name 和 email 请在 .gitconfig.local, .gitconfig.work 等文件中配置
+
+[core]
+    editor = vim
+    # 忽略文件权限位的变更 (如果你在 Linux/Windows 间混用，建议开启)
+    filemode = false
+    # 全局忽略文件，建议在 dotfiles 里也建一个 .gitignore_global
+    excludesfile = ~/.gitignore_global
+    # 处理换行符：提交时转换为 LF，检出时不转换 (适合 Linux/Mac)
+    autocrlf = input
+    # 启用文件系统缓存，加快大型项目的命令速度
+    fsmonitor = true
+
+[init]
+    # 新项目默认使用 main 分支，不再是 master
+    defaultBranch = main
+
+# ============================================================================
+# Push & Pull Behavior (Modern Standards)
+# ============================================================================
+[push]
+    # 默认只推送当前分支
+    default = simple
+    # 【神器】自动建立远程追踪分支。
+    # 以前必须写: git push --set-upstream origin feature
+    # 现在只需写: git push，git 会自动帮你加上 --set-upstream
+    autoSetupRemote = true
+
+[pull]
+    # 拉取时默认使用 rebase，保持提交历史是一条直线，而不是到处都是 merge bubble
+    rebase = true
+
+[fetch]
+    # fetch 时自动清理远程已经删除的分支引用
+    prune = true
+
+# ============================================================================
+# Diff & Merge (Vim Integration)
+# ============================================================================
+[diff]
+    # 使用 histogram 算法，对代码块的移动和重构识别更智能
+    algorithm = histogram
+    # 能够识别代码块的移动，并在 diff 中用不同颜色高亮
+    colorMoved = default
+    # 设为 true 会让 diff header 更有语义 (例如显示在哪个函数里修改)
+    mnemonicPrefix = true
+    renames = true
+    tool = vimdiff
+
+[difftool]
+    prompt = false
+
+[merge]
+    tool = vimdiff
+    # 【神器】显示冲突时，除了 Ours 和 Theirs，还显示 Base (共同祖先)
+    # 这对于解决复杂冲突非常有帮助
+    conflictstyle = zdiff3
+
+[mergetool]
+    prompt = false
+    keepBackup = false
+
+# ============================================================================
+# UI & Colors
+# ============================================================================
+[color]
+    ui = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+# ============================================================================
+# Aliases
+# ============================================================================
+[alias]
+    # --- 基础简写 ---
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    # 简短的状态显示
+    s = status -s
+
+    # --- Diff ---
+    d = diff
+    # 查看已暂存文件的 diff
+    ds = diff --staged
+
+    # --- Reset & Undo ---
+    unstage = reset HEAD --
+    # 撤销上一次 commit，但保留文件修改 (soft reset)
+    undo = reset HEAD~1 --mixed
+    # 彻底丢弃本地修改 (慎用)
+    discard = checkout -- .
+
+    # --- Commit ---
+    # 修改上一次 commit 的内容，且不修改 commit message
+    amend = commit --amend --no-edit
+
+    # --- Log ---
+    last = log -1 HEAD
+    # 图形化显示日志 (优化版)
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    # 显示最近修改的文件的列表
+    ll = log --pretty=format:"" --name-only -n 10
+
+    # --- 高级 Tag 操作 ---
+    # 1. 删除远程和本地 Tag
+    rmtag = "!f() { git push origin --delete \"$1\" && git fetch --prune --prune-tags && git tag -d \"$1\" 2>/dev/null; }; f"
+    # 2. 重命名 Tag
+    renametag = "!f() { git tag \"$2\" \"$1\" && git push origin \"$2\" && git push origin --delete \"$1\" && git tag -d \"$1\"; }; f"
+
+    # --- 其他实用 ---
+    # 忽略某个文件的本地修改 (不提交，但也不想在 git status 里看到)
+    ignore = update-index --assume-unchanged
+    # 恢复对某个文件的追踪
+    unignore = update-index --no-assume-unchanged
+
+# ============================================================================
+# Configuration Includes (Local Overrides)
+# ============================================================================
+
+# 1. 默认加载的本地通用配置
+[include]
+    path = ~/.gitconfig.local
+
+# 2. 个人项目配置 (GitHub)
+[includeIf "gitdir:~/github/"]
+    path = ~/.gitconfig.github
+
+# 3. 公司项目配置 (Work)
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig.work
