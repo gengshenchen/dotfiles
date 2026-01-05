@@ -79,3 +79,5 @@ augroup filetype_comment
     autocmd!
     autocmd FileType c,cpp setlocal commentstring=//%s
 augroup END
+
+let mapleader = "\<Space>"
