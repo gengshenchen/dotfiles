@@ -21,3 +21,13 @@ vf() {
 
 # rust
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+# 1. NoMachine 与 桌面 快捷开关
+alias gui-on='sudo /usr/NX/bin/nxserver --start && sudo systemctl start gdm3 && echo "图形界面已开启"'
+alias gui-off='sudo /usr/NX/bin/nxserver --stop && sudo systemctl stop gdm3 && echo "图形界面已关闭，进入极致省电模式"'
+
+# 2. 查看系统状态 (频率 + 温度)
+alias status='watch -n 1 "grep \"cpu MHz\" /proc/cpuinfo && sensors"'
+
+# 3. 强制锁定节能模式 (如果重启失效了可以用这个)
+alias lock-low='echo "powersave" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
