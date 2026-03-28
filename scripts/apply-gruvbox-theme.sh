@@ -13,84 +13,82 @@ FOREGROUND_COLOR="#EBDBB2"
 BOLD_COLOR="#EBDBB2"
 
 # --- macOS Terminal.app 配置 ---
+# 使用 osascript (JXA) 调用 ObjC 桥接生成正确的 NSColor 归档数据
 apply_macos_terminal() {
-    SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-    PROFILE_FILE="${SCRIPT_DIR}/Gruvbox-Dark.terminal"
+    echo "Configuring Terminal.app with Gruvbox Dark theme..."
 
-    # 生成 Terminal.app profile (plist 格式)
-    cat > "$PROFILE_FILE" <<'PLIST'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>name</key>
-    <string>Gruvbox-Dark</string>
-    <key>type</key>
-    <string>Window Settings</string>
-    <key>BackgroundColor</key>
-    <data>
-    YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9i
-    amVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGjCwwTVSRu
-    dWxs0w0ODxARElVOU1JHQlxOU0NvbG9yU3BhY2VWJGNsYXNzTxAYMC4xNTY4
-    NjI3NDUxIDAuMTU2ODYyNzQ1MQAQAYAC0hQVFhdaJGNsYXNzbmFtZVgkY2xh
-    c3Nlc1dOU0NvbG9yohYYWE5TT2JqZWN0CBAaHykkKTJAQkRJW2RmeHqAAAAA
-    AAABAQAAAAAAAAkAAAAAAAAAAAAAAAAAAACC
-    </data>
-    <key>TextColor</key>
-    <data>
-    YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9i
-    amVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGjCwwTVSRu
-    dWxs0w0ODxARElVOU1JHQlxOU0NvbG9yU3BhY2VWJGNsYXNzTxAoMC45MjE1
-    Njg2Mjc1IDAuODU4ODIzNTI5NCAwLjY5ODAzOTIxNTcAEAGAAtIUFRYXWiRj
-    bGFzc25hbWVYJGNsYXNzZXNXTlNDb2xvcqIWGFhOU09iamVjdAgQGh8kKTJA
-    QkRJW2RmeHqAAAAAAAAAAQEAAAAAAAAJAAAAAAAAAAAAAAAAAAAAkg==
-    </data>
-    <key>TextBoldColor</key>
-    <data>
-    YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9i
-    amVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGjCwwTVSRu
-    dWxs0w0ODxARElVOU1JHQlxOU0NvbG9yU3BhY2VWJGNsYXNzTxAoMC45MjE1
-    Njg2Mjc1IDAuODU4ODIzNTI5NCAwLjY5ODAzOTIxNTcAEAGAAtIUFRYXWiRj
-    bGFzc25hbWVYJGNsYXNzZXNXTlNDb2xvcqIWGFhOU09iamVjdAgQGh8kKTJA
-    QkRJW2RmeHqAAAAAAAAAAQEAAAAAAAAJAAAAAAAAAAAAAAAAAAAAkg==
-    </data>
-    <key>CursorColor</key>
-    <data>
-    YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9i
-    amVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGjCwwTVSRu
-    dWxs0w0ODxARElVOU1JHQlxOU0NvbG9yU3BhY2VWJGNsYXNzTxAoMC45MjE1
-    Njg2Mjc1IDAuODU4ODIzNTI5NCAwLjY5ODAzOTIxNTcAEAGAAtIUFRYXWiRj
-    bGFzc25hbWVYJGNsYXNzZXNXTlNDb2xvcqIWGFhOU09iamVjdAgQGh8kKTJA
-    QkRJW2RmeHqAAAAAAAAAAQEAAAAAAAAJAAAAAAAAAAAAAAAAAAAAkg==
-    </data>
-    <key>Font</key>
-    <data>
-    YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9i
-    amVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGkCwwRElUk
-    bnVsbNMNDg8QFBVWTlNOYW1lViRjbGFzc1ZOU1NpemVfEBBNZW5sby1SZWd1
-    bGFygAIjQCgAAAAAAAAS0hMUFRZaJGNsYXNzbmFtZVgkY2xhc3Nlc1ZOU0Zv
-    bnSiFRdYTlNPYmplY3QIEBofJCkyQEJER0xSXWZoeouNjwAAAAAAAAEBAAAA
-    AAAAGAAAAAAAAAAAAAAAAAAAAJg=
-    </data>
-    <key>UseBoldFonts</key>
-    <true/>
-    <key>columnCount</key>
-    <integer>120</integer>
-    <key>rowCount</key>
-    <integer>36</integer>
-</dict>
-</plist>
-PLIST
+    /usr/bin/osascript -l JavaScript <<'JSEOF'
+ObjC.import('AppKit')
+ObjC.import('Foundation')
 
-    echo "Generated Terminal.app profile: $PROFILE_FILE"
-    echo "To install: open '$PROFILE_FILE' (double-click or 'open' command)"
-    echo "Then set Gruvbox-Dark as default in Terminal > Preferences > Profiles"
+// 生成 NSKeyedArchiver 归档的 NSColor 数据
+function archivedColor(r, g, b) {
+    var color = $.NSColor.colorWithCalibratedRedGreenBlueAlpha(r, g, b, 1.0)
+    var data = $.NSKeyedArchiver.archivedDataWithRootObject(color)
+    return data
+}
 
-    # 自动导入 profile
-    if command -v open >/dev/null 2>&1; then
-        open "$PROFILE_FILE"
-        echo "Profile imported into Terminal.app."
-    fi
+// 生成 NSKeyedArchiver 归档的 NSFont 数据
+function archivedFont(name, size) {
+    var font = $.NSFont.fontWithNameSize(name, size)
+    var data = $.NSKeyedArchiver.archivedDataWithRootObject(font)
+    return data
+}
+
+// Gruvbox Dark 调色板 (16 ANSI colors)
+var colors = {
+    "ANSIBlackColor":         archivedColor(0.157, 0.157, 0.157),  // #282828
+    "ANSIRedColor":           archivedColor(0.800, 0.141, 0.114),  // #CC241D
+    "ANSIGreenColor":         archivedColor(0.596, 0.592, 0.102),  // #98971A
+    "ANSIYellowColor":        archivedColor(0.843, 0.600, 0.129),  // #D79921
+    "ANSIBlueColor":          archivedColor(0.271, 0.522, 0.533),  // #458588
+    "ANSIMagentaColor":       archivedColor(0.694, 0.384, 0.525),  // #B16286
+    "ANSICyanColor":          archivedColor(0.408, 0.616, 0.416),  // #689D6A
+    "ANSIWhiteColor":         archivedColor(0.659, 0.600, 0.518),  // #A89984
+    "ANSIBrightBlackColor":   archivedColor(0.573, 0.514, 0.455),  // #928374
+    "ANSIBrightRedColor":     archivedColor(0.984, 0.286, 0.204),  // #FB4934
+    "ANSIBrightGreenColor":   archivedColor(0.722, 0.733, 0.149),  // #B8BB26
+    "ANSIBrightYellowColor":  archivedColor(0.980, 0.741, 0.184),  // #FABD2F
+    "ANSIBrightBlueColor":    archivedColor(0.514, 0.647, 0.596),  // #83A598
+    "ANSIBrightMagentaColor": archivedColor(0.827, 0.525, 0.608),  // #D3869B
+    "ANSIBrightCyanColor":    archivedColor(0.557, 0.753, 0.486),  // #8EC07C
+    "ANSIBrightWhiteColor":   archivedColor(0.922, 0.859, 0.698),  // #EBDBB2
+}
+
+// 构建 profile 字典
+var profile = $.NSMutableDictionary.alloc.init
+profile.setObjectForKey("Gruvbox-Dark", "name")
+profile.setObjectForKey("Window", "type")
+profile.setObjectForKey(archivedColor(0.157, 0.157, 0.157), "BackgroundColor")
+profile.setObjectForKey(archivedColor(0.922, 0.859, 0.698), "TextColor")
+profile.setObjectForKey(archivedColor(0.922, 0.859, 0.698), "TextBoldColor")
+profile.setObjectForKey(archivedColor(0.922, 0.859, 0.698), "CursorColor")
+profile.setObjectForKey(archivedFont("Menlo-Regular", 12), "Font")
+profile.setObjectForKey(true, "UseBoldFonts")
+profile.setObjectForKey(120, "columnCount")
+profile.setObjectForKey(36, "rowCount")
+
+// 写入 ANSI 颜色
+var colorKeys = Object.keys(colors)
+for (var i = 0; i < colorKeys.length; i++) {
+    profile.setObjectForKey(colors[colorKeys[i]], colorKeys[i])
+}
+
+// 写入 Terminal.app 偏好设置
+var defaults = $.NSUserDefaults.alloc.initWithSuiteName("com.apple.Terminal")
+var ws = defaults.dictionaryForKey("Window Settings")
+var newWs = ws ? $.NSMutableDictionary.dictionaryWithDictionary(ws) : $.NSMutableDictionary.alloc.init
+newWs.setObjectForKey(profile, "Gruvbox-Dark")
+defaults.setObjectForKey(newWs, "Window Settings")
+defaults.setObjectForKey("Gruvbox-Dark", "Default Window Settings")
+defaults.setObjectForKey("Gruvbox-Dark", "Startup Window Settings")
+defaults.synchronize
+
+"Gruvbox-Dark theme installed successfully"
+JSEOF
+
+    echo "Gruvbox-Dark theme set as default in Terminal.app."
+    echo "Please restart Terminal.app to see the changes."
 }
 
 # --- Linux GNOME Terminal 配置 ---
