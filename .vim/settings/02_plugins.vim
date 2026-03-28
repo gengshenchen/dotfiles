@@ -13,11 +13,16 @@ augroup END
 let g:lsp_log_file = expand('~/.vim-tmp/lsp.log')
 let g:lsp_log_verbose = 0
 if executable('clangd')
+    if has('mac') || has('macunix')
+        let s:clangd_query_driver = '--query-driver=/usr/bin/clang*,/usr/local/bin/clang*,/opt/homebrew/bin/clang*'
+    else
+        let s:clangd_query_driver = '--query-driver=**/*gcc*,**/*g++*'
+    endif
     augroup vim_lsp_register_clangd
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
                     \ 'name': 'clangd',
-                    \ 'cmd': {server_info->['clangd', '--compile-commands-dir=out','--query-driver=**/*gcc*,**/*g++*']},
+                    \ 'cmd': {server_info->['clangd', '--compile-commands-dir=out', s:clangd_query_driver]},
                     \ 'whitelist': ['c','cpp','objc','objcpp'],
                     \ })
 

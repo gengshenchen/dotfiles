@@ -9,10 +9,9 @@ SOURCE_DIR=$(cd "$(dirname "$0")" && pwd)
 install_dependencies() {
     echo -e "\n${INFO}Checking and installing dependencies...${NC}"
 
-    # 定義必要的工具列表
-    local pkgs_to_install="git gitk vim-gtk3 curl build-essential cmake python3-dev ripgrep clangd clang-format cmake universal-ctags"
     local pkg_manager=""
     local install_cmd=""
+    local pkgs_to_install=""
     local rust_components="rust-analyzer rustfmt"
 
     # 偵測作業系統和套件管理器
@@ -23,14 +22,16 @@ install_dependencies() {
         fi
         pkg_manager="brew"
         install_cmd="brew install"
+        pkgs_to_install="git macvim curl cmake python3 ripgrep llvm clang-format universal-ctags"
     elif command -v apt-get &> /dev/null; then
         pkg_manager="apt"
         install_cmd="sudo apt-get install -y"
+        pkgs_to_install="git gitk vim-gtk3 curl build-essential cmake python3-dev ripgrep clangd clang-format universal-ctags"
         # 更新 apt 列表
         echo "--> Updating apt package list..."
         sudo apt-get update
     else
-        echo -e "${ERROR}Unsupported package manager. Please install dependencies manually: ${pkgs_to_install}${NC}"
+        echo -e "${ERROR}Unsupported package manager. Please install dependencies manually.${NC}"
         return
     fi
 
@@ -127,7 +128,11 @@ echo "--> 4. Installing plugins via git submodule..."
 cd "${SOURCE_DIR}"
 git submodule update --init --recursive
 echo "--> Installing fzf binary..."
-.vim/pack/plugins/start/fzf/install --all
+if [[ "$(uname)" == "Darwin" ]] && command -v fzf &> /dev/null; then
+    echo "--> fzf already installed via Homebrew. Skipping."
+else
+    .vim/pack/plugins/start/fzf/install --all
+fi
 
 # --- 5. 自動生成 help tags ---
 echo "--> 5. Generating helptags for all plugins..."
@@ -135,7 +140,7 @@ echo "--> 5. Generating helptags for all plugins..."
 vim -Es -u NONE -c 'helptags ALL' -c 'q'
 
 # ---6. Terminal 配置主题
-echo -e "--> 6. Configuring Terminal using our self-contained script...${NC}"
+echo -e "--> 6. Configuring Terminal theme...${NC}"
 sh "${SOURCE_DIR}/scripts/apply-gruvbox-theme.sh"
 
 # --- 7. 設定 Shell 環境 ---
